@@ -2,21 +2,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-class Program
+namespace Factorial;
+
+public class Program
 {
 	public static void Main(string[] args)
 	{
-		ulong result = Factorial(ulong.Parse(args[0]));
-		Console.WriteLine(result);
+		try
+		{
+			int result = Factorial(int.Parse(args[0]));
+			Console.WriteLine(result);
+		}
+		catch(Exception exception)
+		{
+			Console.WriteLine(exception.ToString());
+		}
 	}
 	
-	public static ulong Factorial(ulong n)
+	public static int Factorial(int n)
 	{
 		if(n == 0)
 			return 1;
 		
-		ulong[] numbers = new ulong[n];
-		numbers = (from num in numbers select numbers[0]++ + 1).ToArray();
-		return numbers.Aggregate(1UL, (product, next) => product = product * next);
+		int[] numbers = new int[n];
+		numbers = Enumerable.Range(1, n).ToArray();
+		return numbers.Aggregate(1, (product, next) => product = product * next);
 	}
 }
