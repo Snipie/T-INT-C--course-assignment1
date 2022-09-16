@@ -2,18 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+namespace Fibonacci;
+
 public class Program
 {
   public static void Main(string[] args)
   {
-	try
-	{
-		Console.WriteLine(Fibonacci(int.Parse(args[0])));
-	}
+    try
+    {
+      Console.WriteLine(Fibonacci(int.Parse(args[0])));
+    }
     catch(Exception exception)
-	{
-		Console.WriteLine(exception.ToString());
-	}
+    {
+      Console.WriteLine(exception.ToString());
+    }
   }
 
   public static int Fibonacci(int n)
@@ -21,15 +23,14 @@ public class Program
     if(n <= 1)
       return n;
 
-    List<int> series = Enumerable.Range(0, n).ToList();
+    List<int> series = new List<int>();
+    series.AddRange(Enumerable.Repeat(0, n - 1));
 
-    series = (from num in series where num < 3 select num > 1 ? series[0] + series[1] : num).ToList();
-    series.Reverse();
-    
-    for(int i = 3; i <= n; i++)
-      series = series.Prepend(series.Take(2).Sum()).ToList();
+    List<int> seed = new List<int>(){0, 1};
 
-    return series.First();
+    series = series.Select<int, int>(s => {s = seed.TakeLast(2).Sum(); seed.Add(s); return s;}).ToList();
+
+    return series.Last();
   }
 
   public static void PrintEnumerable<T>(IEnumerable<T> e)
